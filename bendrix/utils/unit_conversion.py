@@ -18,7 +18,6 @@ class UnitConversion:
         'N/m_to_N/mm': 0.001,
         'N*mm_to_N*m': 0.001,
         'N*m_to_N*mm': 1000,
-        # Add more as needed from your original
         'kg_to_lb': 2.20462,
         'lb_to_kg': 0.453592,
         'cm_to_in': 0.393701,
