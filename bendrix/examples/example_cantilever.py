@@ -1,14 +1,32 @@
-from ...bendrix.beam_analysis.beam import Beam
-from ...bendrix.beam_analysis.supports import Support
-from ...bendrix.loads.loads import PointLoad, MomentLoad
+import os
+import sys
 
-beam = Beam(length=3000, beam_type='cantilever')
-beam.add_support(Support(position=0, type='fixed'))
-beam.add_load(PointLoad(magnitude=500, position=1500))
-beam.add_load(MomentLoad(magnitude=1000, position=3000))
-reactions = beam.calculate_reactions()
-print("Cantilever Reactions:")
-for key, val in reactions.items():
-    print(f"{key}: {val}")
-beam.plot_diagrams()
-beam.export_sf_bm_to_csv('cantilever.csv')
+# Ensure project root (parent of the 'bendrix' package) is on sys.path when executed directly
+if __name__ == '__main__':
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+
+from bendrix.beam_analysis.beam import Beam
+from bendrix.beam_analysis.supports import Support
+from bendrix.loads.loads import PointLoad, MomentLoad
+
+
+def main(save_dir=None):
+    beam = Beam(length=3000, beam_type='cantilever')
+    beam.add_support(Support(position=0, type='fixed'))
+    beam.add_load(PointLoad(magnitude=500, position=1500))
+    beam.add_load(MomentLoad(magnitude=1000, position=3000))
+    reactions = beam.calculate_reactions()
+    print("Cantilever Reactions:")
+    for key, val in reactions.items():
+        print(f"{key}: {val}")
+    if save_dir is None:
+        save_dir = os.path.join(os.path.dirname(__file__), '')
+    beam.plot_diagrams(save_path=save_dir, show=False)
+    csv_path = os.path.join(save_dir, 'cantilever.csv')
+    beam.export_sf_bm_to_csv(csv_path)
+
+
+if __name__ == '__main__':
+    main()
